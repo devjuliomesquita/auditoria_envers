@@ -19,13 +19,13 @@ import java.util.function.Function;
 public class JwtService {
 
     @Value("${api.security.token.secret-key}")
-    private String SECRET_KEY;
+    private String secretKey;
 
     @Value("${api.security.token.expiration}")
-    private Long ACCESS_EXPIRATION;
+    private Long accessExpiration;
 
     @Value("${api.security.token.refresh-token.expiration}")
-    private Long REFRESH_EXPIRATION;
+    private Long refreshExpiration;
 
     public String extractUserCpf(String jwt) {
         return this.extractClaim(jwt, Claims::getSubject);
@@ -46,7 +46,7 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
-        byte[] decode = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] decode = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(decode);
     }
 
@@ -58,13 +58,13 @@ public class JwtService {
         Map<String, Object> extraClaims,
         UserDetails userDetails
     ) {
-        return this.buildToken(extraClaims, userDetails, ACCESS_EXPIRATION);
+        return this.buildToken(extraClaims, userDetails, accessExpiration);
     }
 
     public String generateRefreshToken(
         UserDetails userDetails
     ) {
-        return this.buildToken(new HashMap<>(), userDetails, REFRESH_EXPIRATION);
+        return this.buildToken(new HashMap<>(), userDetails, refreshExpiration);
     }
 
 
