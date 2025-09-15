@@ -31,7 +31,7 @@ public class TokenEnt extends BaseEntityWithGeneratedId {
 
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEnt user;
 
     public static TokenEnt create(String value, TokenType tokenType,  UserEnt user){

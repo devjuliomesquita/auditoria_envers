@@ -5,10 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface ProfileRepository extends JpaRepository<ProfileEnt, UUID> {
+public interface ProfileRepository extends JpaRepository<ProfileEnt, Long> {
 
     Optional<ProfileEnt> findByName(String name);
 }

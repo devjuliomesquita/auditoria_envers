@@ -31,7 +31,7 @@ public class UserEnt extends BaseEntityWithGeneratedId implements UserDetails {
 
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "profile_id", referencedColumnName = "profile_id")
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private ProfileEnt profile;
 
     @NotAudited
