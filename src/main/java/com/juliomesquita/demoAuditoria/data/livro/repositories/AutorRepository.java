@@ -1,6 +1,6 @@
-package com.juliomesquita.demoAuditoria.data.repositories;
+package com.juliomesquita.demoAuditoria.data.livro.repositories;
 
-import com.juliomesquita.demoAuditoria.data.entities.AutorEnt;
+import com.juliomesquita.demoAuditoria.data.livro.entities.AutorEnt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

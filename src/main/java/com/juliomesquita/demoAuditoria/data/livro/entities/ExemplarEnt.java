@@ -1,4 +1,4 @@
-package com.juliomesquita.demoAuditoria.data.entities;
+package com.juliomesquita.demoAuditoria.data.livro.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.envers.AuditTable;

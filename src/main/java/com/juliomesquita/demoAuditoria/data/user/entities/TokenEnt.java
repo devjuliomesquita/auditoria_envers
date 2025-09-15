@@ -1,11 +1,17 @@
 package com.juliomesquita.demoAuditoria.data.user.entities;
 
-import com.juliomesquita.demoAuditoria.data.entities.BaseEntityWithGeneratedId;
+import com.juliomesquita.demoAuditoria.data.livro.entities.BaseEntityWithGeneratedId;
 import com.juliomesquita.demoAuditoria.data.user.enums.TokenType;
 import jakarta.persistence.*;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 @Entity
 @Table(name = "tokens")
+@Audited
+@AuditTable(value = "tokens_aud", schema = "core_audit")
 public class TokenEnt extends BaseEntityWithGeneratedId {
 
     @Column(name = "token_value", length = 2000)
@@ -15,12 +21,15 @@ public class TokenEnt extends BaseEntityWithGeneratedId {
     @Column(name = "token_type")
     private TokenType tokenType;
 
+    @NotAudited
     @Column(name = "token_expired")
     private boolean expired;
 
+    @NotAudited
     @Column(name = "token_revoked")
     private boolean revoked;
 
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserEnt user;

@@ -1,8 +1,12 @@
 package com.juliomesquita.demoAuditoria.data.user.entities;
 
-import com.juliomesquita.demoAuditoria.data.entities.BaseEntityWithGeneratedId;
+import com.juliomesquita.demoAuditoria.data.livro.entities.BaseEntityWithGeneratedId;
 import com.juliomesquita.demoAuditoria.data.user.enums.PermissionTypes;
 import jakarta.persistence.*;
+import org.hibernate.envers.AuditJoinTable;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.Serializable;
@@ -10,19 +14,25 @@ import java.util.*;
 
 @Entity
 @Table(name = "profiles")
+@Audited
+@AuditTable(value = "profiles_aud", schema = "core_audit")
 public class ProfileEnt extends BaseEntityWithGeneratedId implements Serializable {
 
-    @Column(name = "profile_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "profile_description")
+    @Column(name = "description")
     private String description;
 
+    @NotAudited
     @OneToMany(mappedBy = "profile")
     private Set<UserEnt> users = new HashSet<>();
 
+    @AuditJoinTable(name = "profile_permissions_aud", schema = "core_audit")
+    @ElementCollection(targetClass = PermissionTypes.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "profile_permissions", joinColumns = @JoinColumn(name = "profile_id"), foreignKey = @ForeignKey(name = "fk_profile_permissions_profile"))
+    @Column(name = "permission", nullable = false)
     @Enumerated(EnumType.STRING)
-    @Column(name = "permissions")
     private Set<PermissionTypes> permissions = new HashSet<>();
 
     public static ProfileEnt create(final String name, final String description) {
@@ -55,7 +65,7 @@ public class ProfileEnt extends BaseEntityWithGeneratedId implements Serializabl
         return this;
     }
 
-    public List<SimpleGrantedAuthority> getAuthoraties(){
+    public List<SimpleGrantedAuthority> getAuthoraties() {
         List<SimpleGrantedAuthority> permissionsList = new ArrayList<>(this.getPermissions()
             .stream()
             .map(p -> new SimpleGrantedAuthority(p.name()))

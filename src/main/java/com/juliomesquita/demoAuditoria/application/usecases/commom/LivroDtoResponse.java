@@ -1,6 +1,6 @@
 package com.juliomesquita.demoAuditoria.application.usecases.commom;
 
-import com.juliomesquita.demoAuditoria.data.entities.*;
+import com.juliomesquita.demoAuditoria.data.livro.entities.*;
 
 import java.util.List;
 import java.util.Set;

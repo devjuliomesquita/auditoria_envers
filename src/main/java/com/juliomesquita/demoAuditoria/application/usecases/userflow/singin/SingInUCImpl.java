@@ -38,17 +38,19 @@ public class SingInUCImpl extends SingInUC{
     @Override
     public SingInOutput execute(final SingInInput input) {
         input.validatePosswordAndConfirmPassword();
-        ProfileEnt profile = this.checkProfile();// Se eu adicionar um cascade no relacionamento de User para Profile, posso salvar o profile junto com o user
+        final ProfileEnt profile = this.checkProfile();
 
-        UserEnt user = UserEnt.create(input.name(), input.email(), this.passwordEncoder.encode(input.password()), profile);
-        String accessToken = this.createToken(user);
-        TokenEnt token = TokenEnt.create(accessToken, TokenType.BEARER, user);
+        final UserEnt user = UserEnt.create(input.name(), input.email(), this.passwordEncoder.encode(input.password()), profile);
+
+        final String accessToken = this.createToken(user);
+        final TokenEnt token = TokenEnt.create(accessToken, TokenType.BEARER, user);
+        this.tokenRepository.save(token);
 
         user.getTokens().add(token);
-        final  UserEnt userSaved = this.userRepository.save(user);
+        final UserEnt userSaved = this.userRepository.save(user);
 
         this.revokeTokens(userSaved);
-        String refreshToken = this.jwtService.generateRefreshToken(userSaved);
+        final String refreshToken = this.jwtService.generateRefreshToken(userSaved);
         return new SingInOutput(new AuthenticationDtoResponse(accessToken, refreshToken));
     }
 
@@ -81,6 +83,8 @@ public class SingInUCImpl extends SingInUC{
         if (profile.getPermissions().isEmpty()){
             PermissionTypes.getPermissions("user").forEach(profile::addPermission);
         }
+
+        this.profileRepository.save(profile);
 
         return profile;
     }

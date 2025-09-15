@@ -1,7 +1,11 @@
 package com.juliomesquita.demoAuditoria.data.user.entities;
 
-import com.juliomesquita.demoAuditoria.data.entities.BaseEntityWithGeneratedId;
+import com.juliomesquita.demoAuditoria.data.livro.entities.BaseEntityWithGeneratedId;
 import jakarta.persistence.*;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,7 +15,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class UserEnt  extends BaseEntityWithGeneratedId implements UserDetails {
+@Audited
+@AuditTable(value = "users_aud", schema = "core_audit")
+public class UserEnt extends BaseEntityWithGeneratedId implements UserDetails {
 
     @Column(name = "name")
     private String name;
@@ -19,13 +25,16 @@ public class UserEnt  extends BaseEntityWithGeneratedId implements UserDetails {
     @Column(name = "email", unique = true)
     private String email;
 
+    @NotAudited
     @Column(name = "password")
     private String password;
 
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id", referencedColumnName = "profile_id")
     private ProfileEnt profile;
 
+    @NotAudited
     @OneToMany(mappedBy = "user")
     private List<TokenEnt> tokens = new ArrayList<>();
 
@@ -69,8 +78,8 @@ public class UserEnt  extends BaseEntityWithGeneratedId implements UserDetails {
         return true;
     }
 
-//    Pojo
-    private UserEnt(String name, String email, String password, ProfileEnt profile) {
+    //    Pojo
+    private UserEnt(final String name, final String email, final String password, final ProfileEnt profile) {
         this.name = name;
         this.email = email;
         this.password = password;
