@@ -1,0 +1,13 @@
+package com.juliomesquita.demoauditoria.application.usecases.livro.createlivro;
+
+public record CreateLivroInput(
+    String titulo,
+    String isbn,
+    String editora,
+    Integer anoPublicacao,
+    Integer numeroPaginas,
+    String codigoBarras,
+    Boolean disponivel,
+    Long idAutor,
+    String nomeAutor) {
+}
