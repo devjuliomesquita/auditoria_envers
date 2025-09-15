@@ -1,4 +1,4 @@
-package com.juliomesquita.demoAuditoria.data.entities;
+package com.juliomesquita.demoAuditoria.data.audit.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.juliomesquita.demoAuditoria.infra.configs.audit.listener.RevisionAuditedListener;

@@ -1,6 +1,6 @@
 package com.juliomesquita.demoAuditoria.infra.configs.audit.listener;
 
-import com.juliomesquita.demoAuditoria.data.entities.RevisionAuditedEnt;
+import com.juliomesquita.demoAuditoria.data.audit.entities.RevisionAuditedEnt;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.envers.RevisionListener;
 import org.springframework.stereotype.Component;
