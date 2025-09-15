@@ -1,4 +1,4 @@
-package com.juliomesquita.demoAuditoria.application.usecases.createlivro;
+package com.juliomesquita.demoAuditoria.application.usecases.livro.createlivro;
 
 public record CreateLivroInput(
     String titulo,

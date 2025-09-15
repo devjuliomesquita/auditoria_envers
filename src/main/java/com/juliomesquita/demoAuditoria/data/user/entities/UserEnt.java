@@ -1,30 +1,25 @@
 package com.juliomesquita.demoAuditoria.data.user.entities;
 
+import com.juliomesquita.demoAuditoria.data.entities.BaseEntityWithGeneratedId;
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
-@Table(name = "tb_user")
-public class UserEnt implements UserDetails {
+@Table(name = "users")
+public class UserEnt  extends BaseEntityWithGeneratedId implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "user_id", nullable = false)
-    private UUID id;
-
-    @Column(name = "user_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "user_email", unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "user_password")
+    @Column(name = "password")
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -32,7 +27,12 @@ public class UserEnt implements UserDetails {
     private ProfileEnt profile;
 
     @OneToMany(mappedBy = "user")
-    private List<TokenEnt> tokens;
+    private List<TokenEnt> tokens = new ArrayList<>();
+
+    public static UserEnt create(String name, String email, String password, ProfileEnt profile) {
+        return new UserEnt(name, email, password, profile);
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -67,5 +67,32 @@ public class UserEnt implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+//    Pojo
+    private UserEnt(String name, String email, String password, ProfileEnt profile) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.profile = profile;
+    }
+
+    protected UserEnt() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public ProfileEnt getProfile() {
+        return profile;
+    }
+
+    public List<TokenEnt> getTokens() {
+        return tokens;
     }
 }

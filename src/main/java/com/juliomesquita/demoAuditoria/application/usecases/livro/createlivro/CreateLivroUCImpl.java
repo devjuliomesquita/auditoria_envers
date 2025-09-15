@@ -1,4 +1,4 @@
-package com.juliomesquita.demoAuditoria.application.usecases.createlivro;
+package com.juliomesquita.demoAuditoria.application.usecases.livro.createlivro;
 
 import com.juliomesquita.demoAuditoria.application.usecases.commom.LivroDtoResponse;
 import com.juliomesquita.demoAuditoria.data.entities.*;

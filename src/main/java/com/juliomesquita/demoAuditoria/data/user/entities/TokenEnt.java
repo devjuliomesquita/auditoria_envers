@@ -1,17 +1,12 @@
 package com.juliomesquita.demoAuditoria.data.user.entities;
 
+import com.juliomesquita.demoAuditoria.data.entities.BaseEntityWithGeneratedId;
+import com.juliomesquita.demoAuditoria.data.user.enums.TokenType;
 import jakarta.persistence.*;
-import org.flywaydb.core.internal.parser.TokenType;
-
-import java.util.UUID;
 
 @Entity
-@Table(name = "tb_token")
-public class TokenEnt {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "token_id", nullable = false)
-    private UUID id;
+@Table(name = "tokens")
+public class TokenEnt extends BaseEntityWithGeneratedId {
 
     @Column(name = "token_value", length = 2000)
     private String value;
@@ -30,8 +25,20 @@ public class TokenEnt {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserEnt user;
 
-    public UUID getId() {
-        return id;
+    public static TokenEnt create(String value, TokenType tokenType,  UserEnt user){
+        return new TokenEnt(value, tokenType, false, false, user);
+    }
+
+    private TokenEnt(String value, TokenType tokenType, boolean expired, boolean revoked, UserEnt user) {
+        this.value = value;
+        this.tokenType = tokenType;
+        this.expired = expired;
+        this.revoked = revoked;
+        this.user = user;
+    }
+
+    protected TokenEnt() {
+
     }
 
     public String getValue() {

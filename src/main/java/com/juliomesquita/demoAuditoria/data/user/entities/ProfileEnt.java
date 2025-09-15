@@ -1,5 +1,6 @@
 package com.juliomesquita.demoAuditoria.data.user.entities;
 
+import com.juliomesquita.demoAuditoria.data.entities.BaseEntityWithGeneratedId;
 import com.juliomesquita.demoAuditoria.data.user.enums.PermissionTypes;
 import jakarta.persistence.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,12 +9,8 @@ import java.io.Serializable;
 import java.util.*;
 
 @Entity
-@Table(name = "tb_profile")
-public class ProfileEnt implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "profile_id", nullable = false)
-    private UUID id;
+@Table(name = "profiles")
+public class ProfileEnt extends BaseEntityWithGeneratedId implements Serializable {
 
     @Column(name = "profile_name")
     private String name;
@@ -22,11 +19,41 @@ public class ProfileEnt implements Serializable {
     private String description;
 
     @OneToMany(mappedBy = "profile")
-    private List<UserEnt> users;
+    private Set<UserEnt> users = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "permissions")
-    private Set<PermissionTypes> permissions;
+    private Set<PermissionTypes> permissions = new HashSet<>();
+
+    public static ProfileEnt create(final String name, final String description) {
+        return new ProfileEnt(name, description);
+    }
+
+    public ProfileEnt update(final String name, final String description) {
+        this.name = name;
+        this.description = description;
+        return this;
+    }
+
+    public ProfileEnt addPermission(final PermissionTypes permission) {
+        this.permissions.add(permission);
+        return this;
+    }
+
+    public ProfileEnt addUser(final UserEnt user) {
+        this.users.add(user);
+        return this;
+    }
+
+    public ProfileEnt removeUser(final UserEnt user) {
+        this.users.remove(user);
+        return this;
+    }
+
+    public ProfileEnt removePermission(final PermissionTypes permission) {
+        this.permissions.remove(permission);
+        return this;
+    }
 
     public List<SimpleGrantedAuthority> getAuthoraties(){
         List<SimpleGrantedAuthority> permissionsList = new ArrayList<>(this.getPermissions()
@@ -37,12 +64,16 @@ public class ProfileEnt implements Serializable {
         return permissionsList;
     }
 
-    public Set<PermissionTypes> getPermissions() {
-        return permissions;
+    private ProfileEnt(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
-    public UUID getId() {
-        return id;
+    protected ProfileEnt() {
+    }
+
+    public Set<PermissionTypes> getPermissions() {
+        return permissions;
     }
 
     public String getName() {
@@ -53,7 +84,7 @@ public class ProfileEnt implements Serializable {
         return description;
     }
 
-    public List<UserEnt> getUsers() {
+    public Set<UserEnt> getUsers() {
         return users;
     }
 

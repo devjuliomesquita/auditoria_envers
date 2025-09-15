@@ -1,7 +1,7 @@
 package com.juliomesquita.demoAuditoria.infra.controllers.livro;
 
-import com.juliomesquita.demoAuditoria.application.usecases.createlivro.CreateLivroOutput;
-import com.juliomesquita.demoAuditoria.application.usecases.createlivro.CreateLivroUC;
+import com.juliomesquita.demoAuditoria.application.usecases.livro.createlivro.CreateLivroOutput;
+import com.juliomesquita.demoAuditoria.application.usecases.livro.createlivro.CreateLivroUC;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;

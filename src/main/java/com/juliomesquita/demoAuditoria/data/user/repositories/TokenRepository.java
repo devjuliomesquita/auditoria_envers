@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface TokenRepository extends JpaRepository<TokenEnt, Long> {
-    List<TokenEnt> findByUserIdAndExpiredFalseAndRevokedFalse(UUID userId);
+    List<TokenEnt> findByUserIdAndExpiredFalseAndRevokedFalse(Long userId);
 
     Optional<TokenEnt> findByValue(String value);
 }
