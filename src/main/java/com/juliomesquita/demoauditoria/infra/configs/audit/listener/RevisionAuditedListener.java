@@ -32,7 +32,7 @@ public class RevisionAuditedListener implements RevisionListener {
             revisionAudited.setNameActionDoneBy(nameActionDoneBy);
             revisionAudited.setActionDoneBy(user.getId());
         }
-
+        System.out.println("RevisionAuditedListener.newRevision ==> " + principal);
         final String method = AuditMethodInterceptor.getCurrentMethod();
         revisionAudited.setMethodNamesTracking(method);
 
