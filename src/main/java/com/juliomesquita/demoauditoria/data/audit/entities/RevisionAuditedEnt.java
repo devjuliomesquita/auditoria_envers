@@ -11,7 +11,6 @@ import org.hibernate.envers.RevisionTimestamp;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "revision_audited", schema = "core_audit")
@@ -29,16 +28,20 @@ public class RevisionAuditedEnt {
     private Date revisionData;
 
     @JsonIgnore
-    @Column(name = "action_done_by", nullable = false)
-    private UUID actionDoneBy;
+    @Column(name = "action_done_by")
+    private Long actionDoneBy;
 
     @JsonIgnore
     @Column(name = "name_action_done_by", nullable = false)
     private String nameActionDoneBy;
 
     @JsonIgnore
-    @Column(name = "action_done_by_ip", nullable = false)
+    @Column(name = "action_done_by_ip")
     private String actionDoneByIp;
+
+    @JsonIgnore
+    @Column(name = "method_names_tracking", nullable = false)
+    private String methodNamesTracking;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "modified_entity_names", schema = "core_audit", joinColumns = @JoinColumn(name = "revision_id"))
@@ -67,11 +70,11 @@ public class RevisionAuditedEnt {
         this.revisionData = revisionData;
     }
 
-    public UUID getActionDoneBy() {
+    public Long getActionDoneBy() {
         return actionDoneBy;
     }
 
-    public void setActionDoneBy(UUID actionDoneBy) {
+    public void setActionDoneBy(Long actionDoneBy) {
         this.actionDoneBy = actionDoneBy;
     }
 
@@ -99,16 +102,26 @@ public class RevisionAuditedEnt {
         this.modifiedEntityNames = modifiedEntityNames;
     }
 
+    public String getMethodNamesTracking() {
+        return methodNamesTracking;
+    }
+
+    public void setMethodNamesTracking(String methodNamesTracking) {
+        this.methodNamesTracking = methodNamesTracking;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RevisionAuditedEnt that = (RevisionAuditedEnt) o;
-        return Objects.equals(id, that.id) && Objects.equals(revisionData, that.revisionData) && Objects.equals(actionDoneBy, that.actionDoneBy) && Objects.equals(nameActionDoneBy, that.nameActionDoneBy) && Objects.equals(actionDoneByIp, that.actionDoneByIp) && Objects.equals(modifiedEntityNames, that.modifiedEntityNames);
+        return Objects.equals(id, that.id) && Objects.equals(revisionData, that.revisionData)
+            && Objects.equals(actionDoneBy, that.actionDoneBy) && Objects.equals(nameActionDoneBy, that.nameActionDoneBy)
+            && Objects.equals(actionDoneByIp, that.actionDoneByIp) && Objects.equals(methodNamesTracking, that.methodNamesTracking)
+            && Objects.equals(modifiedEntityNames, that.modifiedEntityNames);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, revisionData, actionDoneBy, nameActionDoneBy, actionDoneByIp, modifiedEntityNames);
+        return Objects.hash(id, revisionData, actionDoneBy, nameActionDoneBy, actionDoneByIp, methodNamesTracking, modifiedEntityNames);
     }
 }

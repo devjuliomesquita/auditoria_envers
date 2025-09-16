@@ -4,15 +4,12 @@ import com.juliomesquita.demoauditoria.data.audit.entities.RevisionAuditedEnt;
 import com.juliomesquita.demoauditoria.data.user.entities.UserEnt;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.envers.RevisionListener;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import java.util.UUID;
 
 @Component
 public class RevisionAuditedListener implements RevisionListener {
@@ -22,8 +19,8 @@ public class RevisionAuditedListener implements RevisionListener {
 
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
-            revisionAudited.setActionDoneBy(UUID.randomUUID());
-            revisionAudited.setNameActionDoneBy("nameActionDoneBy");
+            revisionAudited.setActionDoneBy(null);
+            revisionAudited.setNameActionDoneBy("Usuário Anónimo.");
         }
 
         final Object principal = authentication.getPrincipal();
@@ -31,8 +28,11 @@ public class RevisionAuditedListener implements RevisionListener {
         if (principal instanceof UserEnt user) {
             final String nameActionDoneBy = user.getName();
             revisionAudited.setNameActionDoneBy(nameActionDoneBy);
-            revisionAudited.setActionDoneBy(UUID.randomUUID());
+            revisionAudited.setActionDoneBy(user.getId());
         }
+
+        final String method = AuditMethodInterceptor.getCurrentMethod();
+        revisionAudited.setMethodNamesTracking(method);
 
         revisionAudited.setActionDoneByIp(this.getClientIp());
     }
