@@ -10,6 +10,7 @@ import com.juliomesquita.demoauditoria.data.user.repositories.ProfileRepository;
 import com.juliomesquita.demoauditoria.data.user.repositories.TokenRepository;
 import com.juliomesquita.demoauditoria.data.user.repositories.UserRepository;
 import com.juliomesquita.demoauditoria.infra.configs.security.jwt.JwtService;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +36,7 @@ public class SingInUCImpl extends SingInUC{
         this.profileRepository = profileRepository;
     }
 
+    @Transactional
     @Override
     public SingInOutput execute(final SingInInput input) {
         input.validatePosswordAndConfirmPassword();
@@ -44,12 +46,12 @@ public class SingInUCImpl extends SingInUC{
 
         final String accessToken = this.createToken(user);
         final TokenEnt token = TokenEnt.create(accessToken, TokenType.BEARER, user);
-        this.tokenRepository.save(token);
 
         user.getTokens().add(token);
         final UserEnt userSaved = this.userRepository.save(user);
 
         this.revokeTokens(userSaved);
+        this.tokenRepository.save(token);
         final String refreshToken = this.jwtService.generateRefreshToken(userSaved);
         return new SingInOutput(new AuthenticationDtoResponse(accessToken, refreshToken));
     }
@@ -77,14 +79,14 @@ public class SingInUCImpl extends SingInUC{
     }
 
     private ProfileEnt checkProfile(){
-        ProfileEnt profile = this.profileRepository.findByName("users")
+        ProfileEnt profile;
+        profile = this.profileRepository.findByName("users")
             .orElseGet(() -> ProfileEnt.create("user", "User profile with default permissions"));
 
         if (profile.getPermissions().isEmpty()){
             PermissionTypes.getPermissions("user").forEach(profile::addPermission);
+            profile = this.profileRepository.save(profile);
         }
-
-        this.profileRepository.save(profile);
 
         return profile;
     }

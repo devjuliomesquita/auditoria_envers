@@ -1,5 +1,6 @@
 package com.juliomesquita.demoauditoria.infra.configs.security.jwt;
 
+import com.juliomesquita.demoauditoria.data.user.entities.TokenEnt;
 import com.juliomesquita.demoauditoria.data.user.repositories.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -45,7 +47,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         username = this.jwtService.extractUserCpf(jwt);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             final UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            boolean isTokenValid = this.tokenRepository.findByValue(jwt)
+            Optional<TokenEnt> tokenEnt = this.tokenRepository.findByValue(jwt);
+            boolean isTokenValid = tokenEnt
                 .map(t -> !t.isExpired() && !t.isRevoked())
                 .orElse(false);
             if (this.jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
