@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Objects;
+
 @Component
 public class RevisionAuditedListener implements RevisionListener {
     @Override
@@ -23,7 +25,7 @@ public class RevisionAuditedListener implements RevisionListener {
             revisionAudited.setNameActionDoneBy("Usuário Anónimo.");
         }
 
-        final Object principal = authentication.getPrincipal();
+        final Object principal = Objects.requireNonNull(authentication).getPrincipal();
 
         if (principal instanceof UserEnt user) {
             final String nameActionDoneBy = user.getName();
