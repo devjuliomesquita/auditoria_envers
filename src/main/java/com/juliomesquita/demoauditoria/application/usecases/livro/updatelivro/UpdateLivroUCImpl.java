@@ -1,8 +1,9 @@
 package com.juliomesquita.demoauditoria.application.usecases.livro.updatelivro;
 
 import com.juliomesquita.demoauditoria.application.usecases.commom.LivroDtoResponse;
-import com.juliomesquita.demoauditoria.data.livro.entities.*;
-import com.juliomesquita.demoauditoria.data.livro.repositories.AutorRepository;
+import com.juliomesquita.demoauditoria.data.livro.entities.DetalheLivroEnt;
+import com.juliomesquita.demoauditoria.data.livro.entities.IsbnVO;
+import com.juliomesquita.demoauditoria.data.livro.entities.PublicacaoVO;
 import com.juliomesquita.demoauditoria.data.livro.repositories.LivroRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
