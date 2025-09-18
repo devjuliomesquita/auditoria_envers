@@ -2,5 +2,5 @@ package com.juliomesquita.demoauditoria.application.usecases.audit.search.timeli
 
 import com.juliomesquita.demoauditoria.application.usecases.commom.UseCase;
 
-public abstract class TimelineOfAnEntityUC extends UseCase<TimelineOfAnEntityInput, TimelineOfAnEntityOutput> {
+public abstract class TimelineOfAnEntityUC<E, D> extends UseCase<TimelineOfAnEntityInput<E, D>, TimelineOfAnEntityOutput<D>> {
 }

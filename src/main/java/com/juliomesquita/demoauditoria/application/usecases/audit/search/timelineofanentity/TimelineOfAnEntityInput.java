@@ -2,5 +2,12 @@ package com.juliomesquita.demoauditoria.application.usecases.audit.search.timeli
 
 import com.juliomesquita.demoauditoria.application.usecases.commom.SearchQuery;
 
-public record TimelineOfAnEntityInput(Long id, Class<?> entityClass, SearchQuery query) {
+import java.util.function.Function;
+
+public record TimelineOfAnEntityInput<E, D>(
+        Long entityId,
+        Class<E> entityClass,
+        SearchQuery query,
+        Function<E, D> toDto
+) {
 }
