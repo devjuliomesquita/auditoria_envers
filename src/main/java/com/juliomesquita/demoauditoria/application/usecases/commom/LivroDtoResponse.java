@@ -51,7 +51,7 @@ record AutorDtoResponse(Long id, String nome) {
                 return null;
             }
             return new AutorDtoResponse(
-                entity.getId(), entity.getNome().value()
+                entity.getId(), entity.getNome().getValue()
             );
     }
 }

@@ -23,8 +23,8 @@ public class UpdateLivroUCImpl extends UpdateLivroUC {
         final var livroAgg = this.livroRepository.findById(input.id())
             .orElseThrow(() -> new IllegalArgumentException("Livro com id " + input.id() + " não encontrado."));
 
-        IsbnVO isbnVO = new IsbnVO(input.isbn());
-        PublicacaoVO publicacaoVO = new PublicacaoVO(input.editora(), input.numeroPaginas(), input.anoPublicacao());
+        IsbnVO isbnVO = IsbnVO.create(input.isbn());
+        PublicacaoVO publicacaoVO = PublicacaoVO.create(input.editora(), input.numeroPaginas(), input.anoPublicacao());
         DetalheLivroEnt detalhe = livroAgg.getDetalhe().update(isbnVO, publicacaoVO);
         livroAgg.update(input.titulo(), detalhe);
         livroAgg.getExemplares().forEach(exemplar -> exemplar.update(input.codigoBarras(), input.disponivel()));

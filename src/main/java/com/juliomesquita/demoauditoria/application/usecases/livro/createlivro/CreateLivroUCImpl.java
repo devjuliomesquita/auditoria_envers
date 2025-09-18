@@ -24,14 +24,14 @@ public class CreateLivroUCImpl extends CreateLivroUC {
     public CreateLivroOutput execute(final CreateLivroInput input) {
         final AutorEnt autor = this.autorRepository.findById(input.idAutor())
             .map(a -> {
-                a.update(new NomeAutorVO(input.nomeAutor()));
+                a.update(NomeAutorVO.create(input.nomeAutor()));
                 return this.autorRepository.save(a);
             })
-            .orElseGet(() -> AutorEnt.create(new NomeAutorVO(input.nomeAutor())));
+            .orElseGet(() -> AutorEnt.create(NomeAutorVO.create(input.nomeAutor())));
 
         final var livro = LivroAgg.create(input.titulo());
         final var detalhe = DetalheLivroEnt.create(
-            livro, new IsbnVO(input.isbn()), new PublicacaoVO(input.editora(), input.numeroPaginas(), input.anoPublicacao()));
+            livro, IsbnVO.create(input.isbn()), PublicacaoVO.create(input.editora(), input.numeroPaginas(), input.anoPublicacao()));
         final var exemplar = ExemplarEnt.create(input.codigoBarras(), input.disponivel(), livro);
 
         livro
