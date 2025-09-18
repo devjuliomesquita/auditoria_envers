@@ -45,15 +45,15 @@ record ExemplarDtoResponse(Long id, String codigoBarras, Boolean disponivel) {
 
 }
 
-record AutorDtoResponse(Long id, String nome) {
-    public static AutorDtoResponse create(final AutorEnt entity) {
-            if (entity == null) {
-                return null;
-            }
-            return new AutorDtoResponse(
-                entity.getId(), entity.getNome().getValue()
-            );
-    }
-}
+//record AutorDtoResponse(Long id, String nome) {
+//    public static AutorDtoResponse create(final AutorEnt entity) {
+//            if (entity == null) {
+//                return null;
+//            }
+//            return new AutorDtoResponse(
+//                entity.getId(), entity.getNome().getValue()
+//            );
+//    }
+//}
 
 
