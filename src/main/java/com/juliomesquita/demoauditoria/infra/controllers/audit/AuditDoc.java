@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+
 @Tag(name = "Audit", description = "API de gerenciamento de auditoria.")
 public interface AuditDoc {
     @Operation(
@@ -26,6 +28,68 @@ public interface AuditDoc {
     @GetMapping("/timeline-entity/{entityId}")
     ResponseEntity<?> timelineOfAEntity(
         @PathVariable(name = "entityId") Long entityId,
+        @RequestParam(name = "auditEntityType") AuditEntityType auditEntityType,
+        @RequestParam(name = "currentPage", required = false) Integer currentPage,
+        @RequestParam(name = "itemsPerPage", required = false) Integer itemsPerPage,
+        @RequestParam(name = "terms", required = false) String terms,
+        @RequestParam(name = "sort", required = false) String sort,
+        @RequestParam(name = "direction", required = false) String direction
+    );
+
+    @Operation(
+        operationId = "momentOfAEntity",
+        summary = "Buscar um momento específico de uma entidade por uma revisão.",
+        description = "Este endpoint recebe os parametros necessarios para a busca de um momento específico de uma entidade.",
+        tags = {"Audit"},
+        responses = @ApiResponse(responseCode = "200", description = "Ok"),
+        security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @DefaultAuthAPIResponses
+    @GetMapping("/moment-entity/revision/{momentId}")
+    ResponseEntity<?> momentOfAEntity(
+        @PathVariable(name = "momentId") Long momentId,
+        @RequestParam(name = "auditEntityType") AuditEntityType auditEntityType,
+        @RequestParam(name = "currentPage", required = false) Integer currentPage,
+        @RequestParam(name = "itemsPerPage", required = false) Integer itemsPerPage,
+        @RequestParam(name = "terms", required = false) String terms,
+        @RequestParam(name = "sort", required = false) String sort,
+        @RequestParam(name = "direction", required = false) String direction
+    );
+
+    @Operation(
+        operationId = "findMomentsOfAEntity",
+        summary = "Buscar uma lista de revisões para uma determinada entidade.",
+        description = "Este endpoint recebe os parametros necessarios para a busca e retornar as revisões de uma determinada entidade.",
+        tags = {"Audit"},
+        responses = @ApiResponse(responseCode = "200", description = "Ok"),
+        security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @DefaultAuthAPIResponses
+    @GetMapping("/moment-entity/{entityId}")
+    ResponseEntity<?> findMomentsOfAEntity(
+        @PathVariable(name = "entityId") Long entityId,
+        @RequestParam(name = "auditEntityType") AuditEntityType auditEntityType,
+        @RequestParam(name = "currentPage", required = false) Integer currentPage,
+        @RequestParam(name = "itemsPerPage", required = false) Integer itemsPerPage,
+        @RequestParam(name = "terms", required = false) String terms,
+        @RequestParam(name = "sort", required = false) String sort,
+        @RequestParam(name = "direction", required = false) String direction
+    );
+
+    @Operation(
+        operationId = "findMomentsOfAEntityByTime",
+        summary = "Buscar um momento da sua entidade filtrando por datas.",
+        description = "Este endpoint recebe os parametros necessarios para a buscar as alterações realizadas em uma entidade em um determinado periodo.",
+        tags = {"Audit"},
+        responses = @ApiResponse(responseCode = "200", description = "Ok"),
+        security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @DefaultAuthAPIResponses
+    @GetMapping("/moment-entity/{entityId}/by-time")
+    ResponseEntity<?> findMomentsOfAEntityByTime(
+        @PathVariable(name = "entityId") Long entityId,
+        @RequestParam(name = "startDate") LocalDate startDate,
+        @RequestParam(name = "endDate") LocalDate endDate,
         @RequestParam(name = "auditEntityType") AuditEntityType auditEntityType,
         @RequestParam(name = "currentPage", required = false) Integer currentPage,
         @RequestParam(name = "itemsPerPage", required = false) Integer itemsPerPage,

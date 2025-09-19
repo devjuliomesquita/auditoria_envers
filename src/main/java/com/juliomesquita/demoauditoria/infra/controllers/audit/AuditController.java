@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.function.Function;
 
 @RestController
@@ -54,6 +55,40 @@ public class AuditController implements AuditDoc {
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> momentOfAEntity(
+        final Long momentId, final AuditEntityType auditEntityType,
+        final Integer currentPage, final Integer itemsPerPage, final String terms, final String sort,
+        final String direction
+    ) {
+        final SearchQuery searchQuery = new SearchQuery(currentPage, itemsPerPage, terms, sort, direction);
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> findMomentsOfAEntity(
+        final Long entityId, final AuditEntityType auditEntityType,
+        final Integer currentPage, final Integer itemsPerPage, final String terms, final String sort,
+        final String direction
+        ) {
+        final SearchQuery searchQuery = new SearchQuery(currentPage, itemsPerPage, terms, sort, direction);
+
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> findMomentsOfAEntityByTime(
+        final Long entityId, final LocalDate startDate, final LocalDate endDate, final AuditEntityType auditEntityType,
+        final Integer currentPage, final Integer itemsPerPage, final String terms, final String sort,
+        final String direction
+    ) {
+        final SearchQuery searchQuery = new SearchQuery(currentPage, itemsPerPage, terms, sort, direction);
+        return null;
     }
 
     private <E, D> TimelineOfAnEntityOutput<D> getTimeline(
