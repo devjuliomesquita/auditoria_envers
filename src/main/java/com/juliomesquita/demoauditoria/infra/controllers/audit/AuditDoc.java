@@ -48,12 +48,7 @@ public interface AuditDoc {
     @GetMapping("/moment-entity/revision/{momentId}")
     ResponseEntity<?> momentOfAEntity(
         @PathVariable(name = "momentId") Long momentId,
-        @RequestParam(name = "auditEntityType") AuditEntityType auditEntityType,
-        @RequestParam(name = "currentPage", required = false) Integer currentPage,
-        @RequestParam(name = "itemsPerPage", required = false) Integer itemsPerPage,
-        @RequestParam(name = "terms", required = false) String terms,
-        @RequestParam(name = "sort", required = false) String sort,
-        @RequestParam(name = "direction", required = false) String direction
+        @RequestParam(name = "auditEntityType") AuditEntityType auditEntityType
     );
 
     @Operation(
