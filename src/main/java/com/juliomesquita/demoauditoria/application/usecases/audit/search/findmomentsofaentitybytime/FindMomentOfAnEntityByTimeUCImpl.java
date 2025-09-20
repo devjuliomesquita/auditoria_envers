@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 public class FindMomentOfAnEntityByTimeUCImpl<E, D> extends FindMomentOfAnEntityByTimeUC<E, D> {
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public FindMomentOfAnEntityByTimeUCImpl(final EntityManager entityManager) {
         this.entityManager = entityManager;

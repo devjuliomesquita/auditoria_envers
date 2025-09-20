@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MomentOfAnEntityUCImpl<E, D> extends MomentOfAnEntityUC<E, D> {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public MomentOfAnEntityUCImpl(final EntityManager entityManager) {
         this.entityManager = entityManager;

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class RevisionsOfAnEntityUCImpl<E> extends RevisionsOfAnEntityUC<E> {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public RevisionsOfAnEntityUCImpl(final EntityManager entityManager) {
         this.entityManager = entityManager;

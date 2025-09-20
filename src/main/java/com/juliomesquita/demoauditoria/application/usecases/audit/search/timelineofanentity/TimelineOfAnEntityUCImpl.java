@@ -12,7 +12,7 @@ import org.hibernate.envers.query.AuditEntity;
 import java.util.List;
 
 public class TimelineOfAnEntityUCImpl<E, D> extends TimelineOfAnEntityUC<E, D> {
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public TimelineOfAnEntityUCImpl(final EntityManager entityManager) {
         this.entityManager = entityManager;
