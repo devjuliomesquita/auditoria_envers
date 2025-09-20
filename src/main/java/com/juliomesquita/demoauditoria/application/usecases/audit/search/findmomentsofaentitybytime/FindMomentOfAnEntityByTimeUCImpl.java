@@ -4,8 +4,6 @@ import com.juliomesquita.demoauditoria.application.usecases.audit.search.common.
 import com.juliomesquita.demoauditoria.application.usecases.commom.Pagination;
 import com.juliomesquita.demoauditoria.data.audit.entities.RevisionAuditedEnt;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.RevisionType;
@@ -16,21 +14,18 @@ import java.util.Date;
 import java.util.List;
 
 public class FindMomentOfAnEntityByTimeUCImpl<E, D> extends FindMomentOfAnEntityByTimeUC<E, D> {
-
-//    @PersistenceContext
     private EntityManager entityManager;
 
     public FindMomentOfAnEntityByTimeUCImpl(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-//    @Transactional
     @Override
     public FindMomentOfAnEntityByTimeOutput<D> execute(final FindMomentOfAnEntityByTimeInput<E, D> input) {
         final AuditReader auditReader = AuditReaderFactory.get(entityManager);
 
         final Date start = java.sql.Timestamp.valueOf(input.startDate().atStartOfDay());
-        final Date end   = java.sql.Timestamp.valueOf(input.endDate().atTime(LocalTime.MAX));
+        final Date end = java.sql.Timestamp.valueOf(input.endDate().atTime(LocalTime.MAX));
 
         final List<Object[]> result = auditReader.createQuery()
             .forRevisionsOfEntity(input.entityClass(), false, true)

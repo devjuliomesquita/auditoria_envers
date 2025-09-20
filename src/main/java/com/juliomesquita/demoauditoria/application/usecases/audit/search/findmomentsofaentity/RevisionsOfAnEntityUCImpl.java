@@ -5,8 +5,6 @@ import com.juliomesquita.demoauditoria.application.usecases.commom.Pagination;
 import com.juliomesquita.demoauditoria.data.audit.entities.RevisionAuditedEnt;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.RevisionType;
@@ -16,14 +14,12 @@ import java.util.List;
 
 public class RevisionsOfAnEntityUCImpl<E> extends RevisionsOfAnEntityUC<E> {
 
-    @PersistenceContext
     private EntityManager entityManager;
 
     public RevisionsOfAnEntityUCImpl(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    @Transactional
     @Override
     public RevisionsOfAnEntityOutput execute(final RevisionsOfAnEntityInput<E> input) {
         final AuditReader auditReader = AuditReaderFactory.get(entityManager);

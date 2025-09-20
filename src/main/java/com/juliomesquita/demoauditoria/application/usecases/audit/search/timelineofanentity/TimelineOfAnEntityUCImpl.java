@@ -4,8 +4,6 @@ import com.juliomesquita.demoauditoria.application.usecases.audit.search.common.
 import com.juliomesquita.demoauditoria.application.usecases.commom.Pagination;
 import com.juliomesquita.demoauditoria.data.audit.entities.RevisionAuditedEnt;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.RevisionType;
@@ -14,15 +12,12 @@ import org.hibernate.envers.query.AuditEntity;
 import java.util.List;
 
 public class TimelineOfAnEntityUCImpl<E, D> extends TimelineOfAnEntityUC<E, D> {
-
-    @PersistenceContext
     private EntityManager entityManager;
 
     public TimelineOfAnEntityUCImpl(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    @Transactional
     @Override
     public TimelineOfAnEntityOutput<D> execute(final TimelineOfAnEntityInput<E, D> input) {
         final AuditReader auditReader = AuditReaderFactory.get(entityManager);

@@ -4,8 +4,6 @@ import com.juliomesquita.demoauditoria.application.usecases.audit.search.common.
 import com.juliomesquita.demoauditoria.data.audit.entities.RevisionAuditedEnt;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.RevisionType;
@@ -15,14 +13,12 @@ import java.util.List;
 
 public class MomentOfAnEntityUCImpl<E, D> extends MomentOfAnEntityUC<E, D> {
 
-    @PersistenceContext
     private EntityManager entityManager;
 
     public MomentOfAnEntityUCImpl(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    @Transactional
     @Override
     public MomentOfAnEntityOutput<D> execute(final MomentOfAnEntityInput<E, D> input) {
         final AuditReader auditReader = AuditReaderFactory.get(entityManager);
