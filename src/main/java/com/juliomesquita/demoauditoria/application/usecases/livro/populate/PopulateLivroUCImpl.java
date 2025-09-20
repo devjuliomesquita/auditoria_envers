@@ -3,8 +3,6 @@ package com.juliomesquita.demoauditoria.application.usecases.livro.populate;
 import com.github.javafaker.Faker;
 import com.juliomesquita.demoauditoria.application.usecases.livro.createlivro.CreateLivroInput;
 import com.juliomesquita.demoauditoria.application.usecases.livro.createlivro.CreateLivroUC;
-import com.juliomesquita.demoauditoria.data.livro.repositories.LivroRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -17,7 +15,6 @@ public class PopulateLivroUCImpl extends PopulateLivroUC {
         this.createLivroUC = Objects.requireNonNull(createLivroUC);
     }
 
-    @Transactional
     @Override
     public void execute() {
         final Faker faker = new Faker();

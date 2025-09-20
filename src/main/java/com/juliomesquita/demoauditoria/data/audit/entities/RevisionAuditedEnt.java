@@ -27,19 +27,19 @@ public class RevisionAuditedEnt {
     @Column(name = "revision_data", nullable = false)
     private Date revisionData;
 
-    @JsonIgnore
+//    @JsonIgnore
     @Column(name = "action_done_by")
     private Long actionDoneBy;
 
-    @JsonIgnore
+//    @JsonIgnore
     @Column(name = "name_action_done_by", nullable = false)
     private String nameActionDoneBy;
 
-    @JsonIgnore
+//    @JsonIgnore
     @Column(name = "action_done_by_ip")
     private String actionDoneByIp;
 
-    @JsonIgnore
+//    @JsonIgnore
     @Column(name = "method_names_tracking", nullable = false)
     private String methodNamesTracking;
 

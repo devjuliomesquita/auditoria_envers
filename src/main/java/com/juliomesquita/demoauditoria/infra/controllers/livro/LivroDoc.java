@@ -68,4 +68,16 @@ public interface LivroDoc {
     @DefaultAuthAPIResponses
     @PostMapping("populate-database")
     ResponseEntity<?> populateDataBaseLivro();
+
+    @Operation(
+        operationId = "updateDataBaseLivro",
+        summary = "Atualiza vários livros automaticamente.",
+        description = "Este endpoint atualiza vários livros automaticamente.",
+        tags = {"Livro"},
+        responses = @ApiResponse(responseCode = "200", description = "Ok"),
+        security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @DefaultAuthAPIResponses
+    @PostMapping("update-database")
+    ResponseEntity<?> updateDataBaseLivro();
 }

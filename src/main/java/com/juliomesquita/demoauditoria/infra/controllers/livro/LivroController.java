@@ -5,6 +5,7 @@ import com.juliomesquita.demoauditoria.application.usecases.livro.createlivro.Cr
 import com.juliomesquita.demoauditoria.application.usecases.livro.deletelivro.DeleteLivroInput;
 import com.juliomesquita.demoauditoria.application.usecases.livro.deletelivro.DeleteLivroUC;
 import com.juliomesquita.demoauditoria.application.usecases.livro.populate.PopulateLivroUC;
+import com.juliomesquita.demoauditoria.application.usecases.livro.updateauto.UpdateAutoLivroUC;
 import com.juliomesquita.demoauditoria.application.usecases.livro.updatelivro.UpdateLivroInput;
 import com.juliomesquita.demoauditoria.application.usecases.livro.updatelivro.UpdateLivroOutput;
 import com.juliomesquita.demoauditoria.application.usecases.livro.updatelivro.UpdateLivroUC;
@@ -24,15 +25,17 @@ public class LivroController implements LivroDoc {
     private final UpdateLivroUC updateLivroUC;
     private final DeleteLivroUC deleteLivroUC;
     private final PopulateLivroUC populateLivroUC;
+    private final UpdateAutoLivroUC updateAutoLivroUC;
 
     public LivroController(
         final CreateLivroUC createLivroUC, final UpdateLivroUC updateLivroUC,
-        final DeleteLivroUC deleteLivroUC, final PopulateLivroUC populateLivroUC
+        final DeleteLivroUC deleteLivroUC, final PopulateLivroUC populateLivroUC, UpdateAutoLivroUC updateAutoLivroUC
     ) {
         this.createLivroUC = Objects.requireNonNull(createLivroUC);
         this.updateLivroUC = Objects.requireNonNull(updateLivroUC);
         this.deleteLivroUC = Objects.requireNonNull(deleteLivroUC);
         this.populateLivroUC = Objects.requireNonNull(populateLivroUC);
+        this.updateAutoLivroUC = Objects.requireNonNull(updateAutoLivroUC);
     }
 
     @Override
@@ -59,5 +62,11 @@ public class LivroController implements LivroDoc {
     public ResponseEntity<?> populateDataBaseLivro() {
         this.populateLivroUC.execute();
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<?> updateDataBaseLivro() {
+        this.updateAutoLivroUC.execute();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
