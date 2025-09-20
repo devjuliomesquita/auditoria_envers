@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,6 @@ public interface AuditDoc {
         description = "Este endpoint recebe os parametros necessarios para a busca de uma timeline de uma entidade.",
         tags = {"Audit"},
         responses = @ApiResponse(responseCode = "200", description = "Ok"),
-//        requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = ListRolesRequest.exampleRequest))}),
         security = @SecurityRequirement(name = "bearerAuth")
     )
     @DefaultAuthAPIResponses
@@ -83,8 +83,8 @@ public interface AuditDoc {
     @GetMapping("/moment-entity/{entityId}/by-time")
     ResponseEntity<?> findMomentsOfAEntityByTime(
         @PathVariable(name = "entityId") Long entityId,
-        @RequestParam(name = "startDate") LocalDate startDate,
-        @RequestParam(name = "endDate") LocalDate endDate,
+        @RequestParam(name = "startDate") @DateTimeFormat(pattern = "dd-MM-yyyy")  LocalDate startDate,
+        @RequestParam(name = "endDate") @DateTimeFormat(pattern = "dd-MM-yyyy")  LocalDate endDate,
         @RequestParam(name = "auditEntityType") AuditEntityType auditEntityType,
         @RequestParam(name = "currentPage", required = false) Integer currentPage,
         @RequestParam(name = "itemsPerPage", required = false) Integer itemsPerPage,

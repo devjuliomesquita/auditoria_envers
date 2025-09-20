@@ -5,6 +5,10 @@ import com.juliomesquita.demoauditoria.application.usecases.audit.search.findmom
 import com.juliomesquita.demoauditoria.application.usecases.audit.search.findmomentsofaentity.RevisionsOfAnEntityOutput;
 import com.juliomesquita.demoauditoria.application.usecases.audit.search.findmomentsofaentity.RevisionsOfAnEntityUC;
 import com.juliomesquita.demoauditoria.application.usecases.audit.search.findmomentsofaentity.RevisionsOfAnEntityUCImpl;
+import com.juliomesquita.demoauditoria.application.usecases.audit.search.findmomentsofaentitybytime.FindMomentOfAnEntityByTimeInput;
+import com.juliomesquita.demoauditoria.application.usecases.audit.search.findmomentsofaentitybytime.FindMomentOfAnEntityByTimeOutput;
+import com.juliomesquita.demoauditoria.application.usecases.audit.search.findmomentsofaentitybytime.FindMomentOfAnEntityByTimeUC;
+import com.juliomesquita.demoauditoria.application.usecases.audit.search.findmomentsofaentitybytime.FindMomentOfAnEntityByTimeUCImpl;
 import com.juliomesquita.demoauditoria.application.usecases.audit.search.momentofaentity.MomentOfAnEntityInput;
 import com.juliomesquita.demoauditoria.application.usecases.audit.search.momentofaentity.MomentOfAnEntityOutput;
 import com.juliomesquita.demoauditoria.application.usecases.audit.search.momentofaentity.MomentOfAnEntityUC;
@@ -128,14 +132,36 @@ public class AuditController implements AuditDoc {
         final String direction
     ) {
         final SearchQuery searchQuery = new SearchQuery(currentPage, itemsPerPage, terms, sort, direction);
-        return null;
+        final FindMomentOfAnEntityByTimeOutput<?> response;
+
+        switch (auditEntityType) {
+            case LIVRO -> response = getMomentByTime(
+                entityId,
+                startDate, endDate,
+                LivroAgg.class,
+                searchQuery,
+                LivroDtoResponse::create
+            );
+            case AUTOR -> response = getMomentByTime(
+                entityId,
+                startDate, endDate,
+                AutorEnt.class,
+                searchQuery,
+                AutorDtoResponse::create
+            );
+            default -> {
+                return ResponseEntity.badRequest().body("Tipo de entidade de auditoria não suportado: " + auditEntityType);
+            }
+        }
+
+        return ResponseEntity.ok(response);
     }
 
     private <E, D> TimelineOfAnEntityOutput<D> getTimeline(
         final Long entityId, final Class<E> entityClass, final SearchQuery searchQuery, final Function<E, D> toDto
     ) {
-        TimelineOfAnEntityInput<E, D> input = new TimelineOfAnEntityInput<>(entityId, entityClass, searchQuery, toDto);
-        TimelineOfAnEntityUC<E, D> useCase = new TimelineOfAnEntityUCImpl<>(entityManager);
+        final TimelineOfAnEntityInput<E, D> input = new TimelineOfAnEntityInput<>(entityId, entityClass, searchQuery, toDto);
+        final TimelineOfAnEntityUC<E, D> useCase = new TimelineOfAnEntityUCImpl<>(entityManager);
 
         return useCase.execute(input);
     }
@@ -150,6 +176,16 @@ public class AuditController implements AuditDoc {
     private <E, D> MomentOfAnEntityOutput getMoment(final Long revisionId, final Class<E> entityClass, final Function<E, D> toDto) {
         final MomentOfAnEntityInput<E, D> input = new MomentOfAnEntityInput<>(revisionId, entityClass, toDto);
         final MomentOfAnEntityUC<E, D> useCase = new MomentOfAnEntityUCImpl<>(entityManager);
+
+        return useCase.execute(input);
+    }
+
+    private <E, D> FindMomentOfAnEntityByTimeOutput<D> getMomentByTime(
+        final Long entityId,final LocalDate startDate, final LocalDate endDate, final Class<E> entityClass,
+        final SearchQuery searchQuery, final Function<E, D> toDto
+    ) {
+        final FindMomentOfAnEntityByTimeInput<E, D> input = new FindMomentOfAnEntityByTimeInput<>(entityId, startDate, endDate, entityClass, searchQuery, toDto);
+        final FindMomentOfAnEntityByTimeUC<E, D> useCase = new FindMomentOfAnEntityByTimeUCImpl<>(entityManager);
 
         return useCase.execute(input);
     }
