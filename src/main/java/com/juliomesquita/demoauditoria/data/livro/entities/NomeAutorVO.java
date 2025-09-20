@@ -14,9 +14,9 @@ public class NomeAutorVO {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("Nome do autor não pode ser vazio");
         }
-        if (!value.matches("^[A-Za-zÀ-ú\\s]+$")) {
-            throw new IllegalArgumentException("Nome do autor contém caracteres inválidos");
-        }
+//        if (!value.matches("^[A-Za-zÀ-ú\\s]+$")) {
+//            throw new IllegalArgumentException("Nome do autor contém caracteres inválidos");
+//        }
         return new NomeAutorVO(value);
     }
 

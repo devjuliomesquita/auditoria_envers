@@ -14,9 +14,9 @@ public class IsbnVO {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("ISBN não pode ser vazio");
         }
-        if (!value.matches("\\d{3}-\\d{10}")) {
-            throw new IllegalArgumentException("ISBN inválido (esperado formato 978-XXXXXXXXXX)");
-        }
+//        if (!value.matches("\\d{3}-\\d{10}")) {
+//            throw new IllegalArgumentException("ISBN inválido (esperado formato 978-XXXXXXXXXX)");
+//        }
         return new IsbnVO(value);
     }
 

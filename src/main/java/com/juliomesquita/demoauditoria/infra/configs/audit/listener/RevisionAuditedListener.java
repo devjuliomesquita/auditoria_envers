@@ -1,5 +1,7 @@
 package com.juliomesquita.demoauditoria.infra.configs.audit.listener;
 
+import com.juliomesquita.demoauditoria.application.usecases.livro.createlivro.CreateLivroUCImpl;
+import com.juliomesquita.demoauditoria.application.usecases.livro.populate.PopulateLivroUCImpl;
 import com.juliomesquita.demoauditoria.data.audit.entities.RevisionAuditedEnt;
 import com.juliomesquita.demoauditoria.data.user.entities.UserEnt;
 import jakarta.servlet.http.HttpServletRequest;

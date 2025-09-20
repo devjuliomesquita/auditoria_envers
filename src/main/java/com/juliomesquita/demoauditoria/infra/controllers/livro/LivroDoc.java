@@ -56,4 +56,16 @@ public interface LivroDoc {
     @DefaultAuthAPIResponses
     @DeleteMapping("/{id}")
     ResponseEntity<?> deleteLivro(@PathVariable(name = "id") Long id);
+
+    @Operation(
+        operationId = "populateDataBaseLivro",
+        summary = "Criar vários livros automaticamente.",
+        description = "Este endpoint cria vários livros automaticamente.",
+        tags = {"Livro"},
+        responses = @ApiResponse(responseCode = "201", description = "Created"),
+        security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @DefaultAuthAPIResponses
+    @PostMapping("populate-database")
+    ResponseEntity<?> populateDataBaseLivro();
 }

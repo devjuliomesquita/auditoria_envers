@@ -4,10 +4,12 @@ import com.juliomesquita.demoauditoria.application.usecases.livro.createlivro.Cr
 import com.juliomesquita.demoauditoria.application.usecases.livro.createlivro.CreateLivroUC;
 import com.juliomesquita.demoauditoria.application.usecases.livro.deletelivro.DeleteLivroInput;
 import com.juliomesquita.demoauditoria.application.usecases.livro.deletelivro.DeleteLivroUC;
+import com.juliomesquita.demoauditoria.application.usecases.livro.populate.PopulateLivroUC;
 import com.juliomesquita.demoauditoria.application.usecases.livro.updatelivro.UpdateLivroInput;
 import com.juliomesquita.demoauditoria.application.usecases.livro.updatelivro.UpdateLivroOutput;
 import com.juliomesquita.demoauditoria.application.usecases.livro.updatelivro.UpdateLivroUC;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +23,16 @@ public class LivroController implements LivroDoc {
     private final CreateLivroUC createLivroUC;
     private final UpdateLivroUC updateLivroUC;
     private final DeleteLivroUC deleteLivroUC;
+    private final PopulateLivroUC populateLivroUC;
 
-    public LivroController(final CreateLivroUC createLivroUC, final UpdateLivroUC updateLivroUC, final DeleteLivroUC deleteLivroUC) {
+    public LivroController(
+        final CreateLivroUC createLivroUC, final UpdateLivroUC updateLivroUC,
+        final DeleteLivroUC deleteLivroUC, final PopulateLivroUC populateLivroUC
+    ) {
         this.createLivroUC = Objects.requireNonNull(createLivroUC);
         this.updateLivroUC = Objects.requireNonNull(updateLivroUC);
         this.deleteLivroUC = Objects.requireNonNull(deleteLivroUC);
+        this.populateLivroUC = Objects.requireNonNull(populateLivroUC);
     }
 
     @Override
@@ -46,5 +53,11 @@ public class LivroController implements LivroDoc {
     public ResponseEntity<?> deleteLivro(final Long id) {
         this.deleteLivroUC.execute(new DeleteLivroInput(id));
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<?> populateDataBaseLivro() {
+        this.populateLivroUC.execute();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
