@@ -24,3 +24,10 @@ postgres:
   db: core_app
   schema_default: core_system
   schema_audit: core_audit
+
+clickhouse:
+  url: localhost:8123
+  username: clickhouse
+  password: clickhouse
+  db: core_audit
+  schema_default: core_system

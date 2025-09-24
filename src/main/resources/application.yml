@@ -3,16 +3,24 @@ spring:
     name: demoAuditoria
 
   datasource:
-    url: jdbc:postgresql://${postgres.url}/${postgres.db}?currentSchema=${postgres.schema_default}
-    username: ${postgres.username}
-    password: ${postgres.password}
-    hikari:
-      auto-commit: false
-      connection-timeout: 250
-      max-lifetime: 600000
-      maximum-pool-size: 20
-      maximum-idle: 10
-      pool-name: master
+    postgres:
+      url: jdbc:postgresql://${postgres.url}/${postgres.db}?currentSchema=${postgres.schema_default}
+      username: ${postgres.username}
+      password: ${postgres.password}
+      driver-class-name: org.postgresql.Driver
+      hikari:
+        auto-commit: false
+        connection-timeout: 250
+        max-lifetime: 600000
+        maximum-pool-size: 20
+        maximum-idle: 10
+        pool-name: master
+
+    clickhouse:
+      url: jdbc:clickhouse://${clickhouse.url}/${clickhouse.db}
+      username: ${clickhouse.username}
+      password: ${clickhouse.password}
+      driver-class-name: com.clickhouse.jdbc.ClickHouseDriver
 
   jpa:
     show-sql: true
@@ -48,9 +56,9 @@ spring:
     baseline-version: 0
     locations: classpath:db/migration/system,classpath:db/migration/audit
     schemas: ${postgres.schema_default},${postgres.schema_audit}
-    user: ${spring.datasource.username}
-    password: ${spring.datasource.password}
-    url: ${spring.datasource.url}
+    url: jdbc:postgresql://${postgres.url}/${postgres.db}?currentSchema=${postgres.schema_default}
+    user: ${postgres.username}
+    password: ${postgres.password}
 
 server:
   port: 8080
