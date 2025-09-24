@@ -1,6 +1,7 @@
 package com.juliomesquita.demoauditoria.data.livro.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.envers.AuditJoinTable;
 import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 
@@ -29,6 +30,7 @@ public class LivroAgg extends BaseEntityWithGeneratedId {
     @JoinTable(name = "livro_autor_assoc",
         joinColumns = @JoinColumn(name = "livro_id", foreignKey = @ForeignKey(name = "fk_livro_autor_livro")),
         inverseJoinColumns = @JoinColumn(name = "autor_id", foreignKey = @ForeignKey(name = "fk_livro_autor_autor")))
+    @AuditJoinTable(name = "livro_autor_assoc_aud", schema = "core_audit")
     private Set<AutorEnt> autores = new HashSet<>();
 
     public static LivroAgg create(final String titulo) {
