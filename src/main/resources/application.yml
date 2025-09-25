@@ -60,6 +60,29 @@ spring:
     user: ${postgres.username}
     password: ${postgres.password}
 
+  kafka:
+    bootstrap-servers: ${KFKA_SERVER}
+    producer:
+      bootstrap-servers: ${KFKA_SERVER}
+
+#  kafka:
+#    consumer:
+#      bootstrap-servers: localhost:9092
+#      group-id: orderGroup
+#      auto-offset-reset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#      properties:
+#        spring.json.trusted.packages: '*'
+#        spring.json.type.mapping: createOrderMessage:com.juliomesquita.order.infrastructure.broker.kafka.consumer.CreateOrderMessage,updateOrderMessage:com.juliomesquita.order.infrastructure.broker.kafka.consumer.UpdateOrderMessage,closeOrderMessage:com.juliomesquita.order.infrastructure.broker.kafka.consumer.CloseOrderMessage
+#
+#    producer:
+#      bootstrap-servers: localhost:9092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      properties:
+#        spring.json.type.mapping: createComandaMessage:com.juliomesquita.order.application.usecase.order.create.CreateComandaMessage
+
 server:
   port: 8080
   servlet:
